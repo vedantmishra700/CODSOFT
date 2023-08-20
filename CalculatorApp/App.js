@@ -26,60 +26,74 @@ export default function App() {
   };
 
   const calculate = title => {
-    if (title == 'C') {
-      setResult('0');
-    } else if (title == 'X') {
-      if (result.length == 1) {
+    try {
+      if (title == 'C') {
         setResult('0');
-      } else {
-        setResult(result.substring(0, result.length - 1));
-      }
-    } else if (title == '=') {
-      if (isNaN(result[result.length - 1])) {
-        const ans = Number(
-          eval(result.substring(0, result.length - 1)).toFixed(3),
-        ).toString();
-        setResult(ans);
-      } else {
-        const ans = Number(eval(result).toFixed(3)).toString();
-        setResult(ans);
-      }
-    } else {
-      if (result == '0') {
-        if (isNaN(title)) {
-          setResult(result + title);
+      } else if (title == 'X') {
+        if (result.length == 1) {
+          setResult('0');
         } else {
-          setResult(title);
+          setResult(result.substring(0, result.length - 1));
         }
-      } else if (isNaN(result[result.length - 1])) {
-        if (isNaN(title)) {
-          if (
-            result[result.length - 1] == '*' ||
-            result[result.length - 1] == '/'
-          ) {
-            if (title == '+' || title == '-') {
-              setResult(result + title);
-            } else {
-              const str = result.substring(0, result.length - 1);
+      } else if (title == '=') {
+        if (isNaN(result[result.length - 1])) {
+          const ans = Number(
+            eval(result.substring(0, result.length - 1)),
+          ).toString();
+          setResult(ans);
+        } else {
+          const ans = Number(eval(result).toFixed(3)).toString();
+          setResult(ans);
+        }
+      } else {
+        if (result == '0') {
+          if (isNaN(title)) {
+            setResult(result + title);
+          } else {
+            setResult(title);
+          }
+        } else if (isNaN(result[result.length - 1])) {
+          if (isNaN(title)) {
+            if (
+              result[result.length - 1] == '*' ||
+              result[result.length - 1] == '/'
+            ) {
+              if (title == '+' || title == '-') {
+                setResult(result + title);
+              } else {
+                const str = result.substring(0, result.length - 1);
+                setResult(str + title);
+              }
+            } else if (result[result.length - 1] == '%') {
+              if (title == '+') {
+                setResult(result + title);
+              } else {
+                const str = result.substring(0, result.length - 1);
+                setResult(str + title);
+              }
+            } else if (
+              (result[result.length - 1] == '+' ||
+                result[result.length - 1] == '-') &&
+              (result[result.length - 2] == '/' ||
+                result[result.length - 2] == '*' ||
+                result[result.length - 2] == '%')
+            ) {
+              const str = result.substring(0, result.length - 2);
               setResult(str + title);
-            }
-          } else if (result[result.length - 1] == '%') {
-            if (title == '+') {
-              setResult(result + title);
             } else {
               const str = result.substring(0, result.length - 1);
               setResult(str + title);
             }
           } else {
-            const str = result.substring(0, result.length - 1);
-            setResult(str + title);
+            setResult(result + title);
           }
         } else {
           setResult(result + title);
         }
-      } else {
-        setResult(result + title);
       }
+    } catch (error) {
+      console.log(error);
+      setResult(0);
     }
   };
 
